@@ -4,7 +4,7 @@ package com.redhat.service;
  * @author Mahdi Sharifi
  */
 
-import com.redhat.dto.Customer;
+import com.redhat.dto.CustomerDto;
 import com.redhat.entity.CustomerEntity;
 import com.redhat.exception.ServiceException;
 import com.redhat.mapper.CustomerMapper;
@@ -28,34 +28,34 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
 
-    public List<Customer> findAll() {
+    public List<CustomerDto> findAll() {
         return this.customerMapper.toDomainList(customerRepository.findAll().list());
     }
     public Long count() {
         return customerRepository.count();
     }
 
-    public Optional<Customer> findById(@NonNull Integer customerId) {
+    public Optional<CustomerDto> findById(@NonNull Integer customerId) {
         return customerRepository.findByIdOptional(customerId)
                 .map(customerMapper::toDomain);
     }
 
     @Transactional
-    public void save(@Valid Customer customer) {
-        log.debug("Saving Customer: {}", customer);
+    public void save(@Valid CustomerDto customer) {
+        log.debug("Saving CustomerDto: {}", customer);
         CustomerEntity entity = customerMapper.toEntity(customer);
         customerRepository.persist(entity);
         customerMapper.updateDomainFromEntity(entity, customer);
     }
 
     @Transactional
-    public void update(@Valid Customer customer) {
-        log.debug("Updating Customer: {}", customer);
+    public void update(@Valid CustomerDto customer) {
+        log.debug("Updating CustomerDto: {}", customer);
         if (Objects.isNull(customer.getCustomerId())) {
-            throw new ServiceException("Customer does not have a customerId");
+            throw new ServiceException("CustomerDto does not have a customerId");
         }
         CustomerEntity entity = customerRepository.findByIdOptional(customer.getCustomerId())
-                .orElseThrow(() -> new ServiceException("No Customer found for customerId[%s]", customer.getCustomerId()));
+                .orElseThrow(() -> new ServiceException("No CustomerDto found for customerId[%s]", customer.getCustomerId()));
         customerMapper.updateEntityFromDomain(customer, entity);
         customerRepository.persist(entity);
         customerMapper.updateDomainFromEntity(entity, customer);

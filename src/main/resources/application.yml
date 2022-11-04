@@ -1,23 +1,31 @@
-greeting:
-  message: "hello"
-
 quarkus:
-  log:
-    level: INFO
-    category:
-      "com.redhat":
-        level: DEBUG
+  banner:
+    enabled: false
   hibernate-orm:
-    log:
-      sql: true
-  flyway:
-    migrate-at-start: true
-    locations: db/migration,db/testdata
+    database:
+      generation: none
+
   datasource:
     db-kind: postgresql
     username: postgres
     password: mysecretpassword
 
     jdbc:
-      url: jdbc:postgresql://localhost:5432/mahdi-test
+      url: jdbc:postgresql://localhost:5432/customer
       max-size: 6
+
+mp:
+  openapi:
+    extensions:
+      smallrye:
+        info:
+          title: CustomerDto API
+          version: 0.0.1
+          description: API for retrieving customers
+          contact:
+            email: techsupport@redhat.com
+            name: CustomerDto API Support
+            url: https://github.com/quarkus-ground-up/customer-api
+          license:
+            name: Apache 2.0
+            url: http://www.apache.org/licenses/LICENSE-2.0.html

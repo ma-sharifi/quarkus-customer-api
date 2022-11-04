@@ -3,7 +3,7 @@ package com.redhat.resource;
 /**
  * @author Mahdi Sharifi
  */
-import com.redhat.dto.Customer;
+import com.redhat.dto.CustomerDto;
 import com.redhat.exception.ServiceException;
 import com.redhat.service.CustomerService;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.Objects;
 @Path("/customers")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "customer", description = "Customer Operations")
+@Tag(name = "customer", description = "CustomerDto Operations")
 @AllArgsConstructor
 @Slf4j
 public class CustomerResource {
@@ -41,12 +41,12 @@ public class CustomerResource {
             description = "Get All Customers",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(type = SchemaType.ARRAY, implementation = Customer.class)
+                    schema = @Schema(type = SchemaType.ARRAY, implementation = CustomerDto.class)
             )
     )
     public Response get() {
         log.info("Get All Customers called!");
-        System.out.println("#customerService: "+customerService.count());
+        log.debug("#Get All Customers called. count: "+customerService.count());
         return Response.ok(customerService.findAll()).build();
     }
 
@@ -54,15 +54,15 @@ public class CustomerResource {
     @Path("/{customerId}")
     @APIResponse(
             responseCode = "200",
-            description = "Get Customer by customerId",
+            description = "Get CustomerDto by customerId",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(type = SchemaType.OBJECT, implementation = Customer.class)
+                    schema = @Schema(type = SchemaType.OBJECT, implementation = CustomerDto.class)
             )
     )
     @APIResponse(
             responseCode = "404",
-            description = "Customer does not exist for customerId",
+            description = "CustomerDto does not exist for customerId",
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
     public Response getById(@Parameter(name = "customerId", required = true) @PathParam("customerId") Integer customerId) {
@@ -74,23 +74,23 @@ public class CustomerResource {
     @POST
     @APIResponse(
             responseCode = "201",
-            description = "Customer Created",
+            description = "CustomerDto Created",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(type = SchemaType.OBJECT, implementation = Customer.class)
+                    schema = @Schema(type = SchemaType.OBJECT, implementation = CustomerDto.class)
             )
     )
     @APIResponse(
             responseCode = "400",
-            description = "Invalid Customer",
+            description = "Invalid CustomerDto",
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
     @APIResponse(
             responseCode = "400",
-            description = "Customer already exists for customerId",
+            description = "CustomerDto already exists for customerId",
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
-    public Response post(@NotNull @Valid Customer customer, @Context UriInfo uriInfo) {
+    public Response post(@NotNull @Valid CustomerDto customer, @Context UriInfo uriInfo) {
         customerService.save(customer);
         URI uri = uriInfo.getAbsolutePathBuilder().path(Integer.toString(customer.getCustomerId())).build();
         return Response.created(uri).entity(customer).build();
@@ -100,35 +100,35 @@ public class CustomerResource {
     @Path("/{customerId}")
     @APIResponse(
             responseCode = "204",
-            description = "Customer updated",
+            description = "CustomerDto updated",
             content = @Content(
                     mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(type = SchemaType.OBJECT, implementation = Customer.class)
+                    schema = @Schema(type = SchemaType.OBJECT, implementation = CustomerDto.class)
             )
     )
     @APIResponse(
             responseCode = "400",
-            description = "Invalid Customer",
+            description = "Invalid CustomerDto",
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
     @APIResponse(
             responseCode = "400",
-            description = "Customer object does not have customerId",
+            description = "CustomerDto object does not have customerId",
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
     @APIResponse(
             responseCode = "400",
-            description = "Path variable customerId does not match Customer.customerId",
+            description = "Path variable customerId does not match CustomerDto.customerId",
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
     @APIResponse(
             responseCode = "404",
-            description = "No Customer found for customerId provided",
+            description = "No CustomerDto found for customerId provided",
             content = @Content(mediaType = MediaType.APPLICATION_JSON)
     )
-    public Response put(@Parameter(name = "customerId", required = true) @PathParam("customerId") Integer customerId, @NotNull @Valid Customer customer) {
+    public Response put(@Parameter(name = "customerId", required = true) @PathParam("customerId") Integer customerId, @NotNull @Valid CustomerDto customer) {
         if (!Objects.equals(customerId, customer.getCustomerId())) {
-            throw new ServiceException("Path variable customerId does not match Customer.customerId");
+            throw new ServiceException("Path variable customerId does not match CustomerDto.customerId");
         }
         customerService.update(customer);
         return Response.status(Response.Status.NO_CONTENT).build();
