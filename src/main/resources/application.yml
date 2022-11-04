@@ -1,0 +1,23 @@
+greeting:
+  message: "hello"
+
+quarkus:
+  log:
+    level: INFO
+    category:
+      "com.redhat":
+        level: DEBUG
+  hibernate-orm:
+    log:
+      sql: true
+  flyway:
+    migrate-at-start: true
+    locations: db/migration,db/testdata
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: mysecretpassword
+
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/mahdi-test
+      max-size: 6
