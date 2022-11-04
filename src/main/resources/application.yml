@@ -3,7 +3,7 @@ quarkus:
     enabled: false
   hibernate-orm:
     database:
-      generation: none
+      generation: drop-and-create #none
 
   datasource:
     db-kind: postgresql
@@ -11,7 +11,7 @@ quarkus:
     password: mysecretpassword
 
     jdbc:
-      url: jdbc:postgresql://localhost:5432/customer
+      url: jdbc:postgresql://localhost:5432/customer-api
       max-size: 6
 
 mp:

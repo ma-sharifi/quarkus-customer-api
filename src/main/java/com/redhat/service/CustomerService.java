@@ -31,6 +31,11 @@ public class CustomerService {
     public List<CustomerDto> findAll() {
         return this.customerMapper.toDomainList(customerRepository.findAll().list());
     }
+
+    public List<CustomerDto> findByFirsName(String firstName) {
+        return this.customerMapper.toDomainList(customerRepository.findByFirsName(firstName));
+    }
+
     public Long count() {
         return customerRepository.count();
     }

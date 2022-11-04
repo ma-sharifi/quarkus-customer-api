@@ -14,6 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.jboss.resteasy.reactive.RestQuery;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -46,8 +47,22 @@ public class CustomerResource {
     )
     public Response get() {
         log.info("Get All Customers called!");
-        log.debug("#Get All Customers called. count: "+customerService.count());
         return Response.ok(customerService.findAll()).build();
+    }
+
+    @GET
+    @Path("search")
+    @APIResponse(
+            responseCode = "200",
+            description = "Search by Customer name",
+            content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(type = SchemaType.ARRAY, implementation = CustomerDto.class)
+            )
+    )
+    public Response searchByFirstName(@RestQuery String firstName) {
+        log.info("searchByFirstName called!");
+        return Response.ok(customerService.findByFirsName(firstName)).build();
     }
 
     @GET

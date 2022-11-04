@@ -3,6 +3,7 @@ package com.redhat.dto;
 /**
  * @author Mahdi Sharifi
  */
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CustomerDto {
 
     @JsonProperty("customer_id")
